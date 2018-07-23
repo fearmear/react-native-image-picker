@@ -240,10 +240,10 @@ storageOptions.skipBackup | OK | - | If true, the photo will NOT be backed up to
 storageOptions.path | OK | - | If set, will save the image at `Documents/[path]/` rather than the root `Documents`
 storageOptions.cameraRoll | OK | OK | If true, the cropped photo will be saved to the iOS Camera Roll or Android DCIM folder.
 storageOptions.waitUntilSaved | OK | - | If true, will delay the response callback until after the photo/video was saved to the Camera Roll. If the photo or video was just taken, then the file name and timestamp fields are only provided in the response object when this is true.
-permissionDenied.title | - | OK | Title of explaining permissions dialog. By default `Permission denied`.
-permissionDenied.text | - | OK | Message of explaining permissions dialog. By default `To be able to take pictures with your camera and choose images from your library.`.
-permissionDenied.reTryTitle | - | OK | Title of re-try button. By default `re-try`
-permissionDenied.okTitle | - | OK | Title of ok button. By default `I'm sure`
+permissionDenied.title | OK | OK | Title of explaining permissions dialog. By default `Permission denied`.
+permissionDenied.text | OK | OK | Message of explaining permissions dialog. By default `To be able to take pictures with your camera and choose images from your library.`.
+permissionDenied.reTryTitle | OK | OK | Title of re-try button. By default `re-try`
+permissionDenied.okTitle | OK | OK | Title of ok button. By default `I'm sure`
 
 ### The Response Object
 

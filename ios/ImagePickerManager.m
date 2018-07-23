@@ -201,6 +201,7 @@ RCT_EXPORT_METHOD(showImagePicker:(NSDictionary *)options callback:(RCTResponseS
         [self checkCameraPermissions:^(BOOL granted) {
             if (!granted) {
                 self.callback(@[@{@"error": @"Camera permissions not granted"}]);
+                [self showPermissionAlert];
                 return;
             }
 
@@ -211,6 +212,7 @@ RCT_EXPORT_METHOD(showImagePicker:(NSDictionary *)options callback:(RCTResponseS
         [self checkPhotosPermissions:^(BOOL granted) {
             if (!granted) {
                 self.callback(@[@{@"error": @"Photo library permissions not granted"}]);
+                [self showPermissionAlert];
                 return;
             }
 
@@ -670,6 +672,29 @@ RCT_EXPORT_METHOD(showImagePicker:(NSDictionary *)options callback:(RCTResponseS
     CGContextRelease(ctx);
     CGImageRelease(cgimg);
     return img;
+}
+
+-(void)showPermissionAlert{
+    NSDictionary *permissionDenied = [self.options objectForKey:@"permissionDenied"];
+    NSString *title = [permissionDenied objectForKey:@"title"];
+    NSString *text = [permissionDenied objectForKey:@"text"];
+    NSString *reTryTitle = [permissionDenied objectForKey:@"reTryTitle"];
+    NSString *okTitle = [permissionDenied objectForKey:@"okTitle"];
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:text preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *openSettingAction = [UIAlertAction actionWithTitle:reTryTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString:UIApplicationOpenSettingsURLString]]){
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        } else {
+            NSLog(@"The application cannot open Settings for unknown reasons");
+        }
+    }];
+    [alert addAction:cancelAction];
+    [alert addAction:openSettingAction];
+
+    [[[UIApplication sharedApplication].delegate.window rootViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 - (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *) filePathString
